@@ -6,4 +6,6 @@ public struct NavGridPathNode
     /// World position of the node
     /// </summary>
     public Vector3 Position;
+
+
 }
