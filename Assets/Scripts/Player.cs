@@ -6,6 +6,9 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Player controller class
+/// </summary>
 public class Player : MonoBehaviour
 {
     public Animator animator;
@@ -30,6 +33,9 @@ public class Player : MonoBehaviour
         animator = GetComponent<Animator>();
      
     }
+    /// <summary>
+    /// Handling our input processing etc
+    /// </summary>
     void Update()
     {
         // Check for mouse button Input
@@ -79,6 +85,7 @@ public class Player : MonoBehaviour
             var vectorToDestination = targetDestination;// - transform.position; 
             var moveDistance = Mathf.Min(vectorToDestination.magnitude, maxDistance);
 
+            //If the length of the vector is less than the maxDistance we're close enough and move to the next.  This is in case we don't hit the exact location with floats.
             if (vectorToDestination.magnitude <= maxDistance)
             {
 
@@ -100,7 +107,7 @@ public class Player : MonoBehaviour
                 animator.SetFloat("Speed", vectorToDestination.magnitude * speed);
                 transform.position += moveVector;
             }
-
+            //If we hit the location go to the next
             if (transform.position.x == currentNode.worldPosition.x && transform.parent.position.z == currentNode.worldPosition.z)
             {
                 _currentPathIndex++;

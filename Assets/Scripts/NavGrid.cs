@@ -107,7 +107,7 @@ public class NavGrid : MonoBehaviour
     /// </summary>
     private Vector3 lastTransformScale;
 
-    [SerializeField]
+ 
     /// <summary>
     /// path and filename for data storage
     /// </summary>
