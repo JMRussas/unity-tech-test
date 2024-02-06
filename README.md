@@ -1,8 +1,15 @@
 #Justin Russas Comments:
 
 1. Adding obstacles:
-  You can add obstacles to the map by clicking on the NavGridPlane by clicking on the grid with widgets displayed.  A grid will be displayed above the NavGridPlane and clicking on the buttons will add obstacles on those nodes.  The data will be saved to a binary file.
-3.    
+  You can add obstacles to the map by clicking on the NavGridPlane by clicking on the grid with widgets displayed in the scene window.  A grid will be displayed above the NavGridPlane and clicking on the buttons will add obstacles on those nodes.  The data will be saved to a binary file.
+
+Color Coding:
+Walkable areas: Green
+Non-Walkable areas: Red
+
+3. There are no obstacles by default on the playing surface.
+
+4. Widgets can be toggle on and off to look at the walkable areas and non walkable areas beyond the obstacles placed on the map.
 
 # Unity Pathfinding Take-Home Project
 
