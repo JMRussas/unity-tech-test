@@ -266,7 +266,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 809482303106803357}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1296337344}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d342102a7d73846be98feab259fa701a, type: 3}
@@ -510,6 +510,18 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 460880625}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &460880629 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8543377519531903384, guid: 468cec12fb62d6b48bd4f109c9825d4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 460880625}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1296337344 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8739303695474408396, guid: 21f695034f50d4ba1ab0059a12cdc8bc,
+    type: 3}
+  m_PrefabInstance: {fileID: 809482303106803357}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &809482303106803357
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -518,6 +530,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3484464229861482969, guid: 21f695034f50d4ba1ab0059a12cdc8bc,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 460880629}
     - target: {fileID: 3484464229861482969, guid: 21f695034f50d4ba1ab0059a12cdc8bc,
         type: 3}
       propertyPath: filePath
@@ -543,6 +560,11 @@ PrefabInstance:
       propertyPath: gridCellSize
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3484464229861482969, guid: 21f695034f50d4ba1ab0059a12cdc8bc,
+        type: 3}
+      propertyPath: navigationPlane
+      value: 
+      objectReference: {fileID: 1296337344}
     - target: {fileID: 3484464229861482969, guid: 21f695034f50d4ba1ab0059a12cdc8bc,
         type: 3}
       propertyPath: walkableIndicatorPrefab

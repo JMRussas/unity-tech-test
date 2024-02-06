@@ -43,8 +43,7 @@ public class NavGridArrayEditor : Editor
         float ZVal = gridManager.PlaneZSize / gridManager.GridZSize;
 
         float cellSize = .925f;
-        float pickSize = 1f;// cellSize * 0.5f;
-
+       
         Handles.color = Color.green;
 
         //Calculate our offset

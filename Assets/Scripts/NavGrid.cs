@@ -87,10 +87,6 @@ public class NavGrid : MonoBehaviour
     public Vector2 gridWorldSize;
 
     #region properties
-    /// <summary>
-    /// Our prefab to use for our walkable areas
-    /// </summary>
-    public GameObject walkableIndicatorPrefab;
 
     /// <summary>
     /// Our prefab to use to generate our obstacles 
