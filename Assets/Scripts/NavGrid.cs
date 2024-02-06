@@ -75,14 +75,13 @@ public struct NavGridNode
 public class NavGrid : MonoBehaviour
 {
 
-
     /// <summary>
-    /// 
+    /// Transform for the player character
     /// </summary>
     public Transform player;
 
     /// <summary>
-    /// 
+    /// Calculated size of the grid related to world transform  
     /// </summary>
     public Vector2 gridWorldSize;
 
@@ -99,7 +98,7 @@ public class NavGrid : MonoBehaviour
     private Camera cam;
 
     /// <summary>
-    /// 
+    /// Various to keep the last transform scale
     /// </summary>
     private Vector3 lastTransformScale;
 
@@ -125,13 +124,16 @@ public class NavGrid : MonoBehaviour
     /// </summary>
     private float gridXSize;
 
+    /// <summary>
+    /// Ready only propery for the size of the X axis for the grid
+    /// </summary>
     public float GridXSize
     {
         get { return gridXSize; }
     }
 
     /// <summary>
-    /// 
+    /// Calculated size of our X axis for the plane
     /// </summary>
     private float planeXSize;
 
@@ -144,7 +146,7 @@ public class NavGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// read only scale properties for our plane
     /// </summary>
     private int xPlaneScale;
 
@@ -153,17 +155,20 @@ public class NavGrid : MonoBehaviour
     /// </summary>
     private float gridZSize;
 
+    /// <summary>
+    /// Size of the navigation grid Z axis
+    /// </summary>
     public float GridZSize
     {
         get { return gridZSize; }
     }
     /// <summary>
-    /// 
+    /// calculated size of Z axis for the plane
     /// </summary>
     private float planeZSize;
 
     /// <summary>
-    /// Read only property for Plane Z size
+    /// Read only property for calculated Plane Z size
     /// </summary>
     public float PlaneZSize
     {
@@ -171,7 +176,7 @@ public class NavGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Scale settings of Z axis of our plane
     /// </summary>
     private int zPlaneScale;
 
@@ -180,6 +185,9 @@ public class NavGrid : MonoBehaviour
     /// </summary>
     private Node[,] visualGridArray;
 
+    /// <summary>
+    /// Our data storage for our nodes 
+    /// </summary>
     [SerializeField]
     public NavGridNode[,] navGridArray;
 
@@ -250,8 +258,7 @@ public class NavGrid : MonoBehaviour
             return;
 
         NavGridNode[,] NodeGridArrayTMP = navGridArray;
-        // NavGridNode navGridNodeTMP = new NavGridNode();
-
+        
         int xlength = navGridArray.GetLength(0);
         int zLength = navGridArray.GetLength(1);
 
@@ -278,6 +285,9 @@ public class NavGrid : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Reset Pathfinding data after ever pathfind 
+    /// </summary>
     public void ResetPathFindingData()
     {
         for (int x = 0; x < gridXSize; x++)
@@ -318,7 +328,7 @@ public class NavGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Update our Scale.  Usually after someone has modified the plane in the editor 
     /// </summary>
     private void updateScale()
     {
@@ -328,11 +338,17 @@ public class NavGrid : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Handle when someone changes the parameters of the plane in the editor
+    /// </summary>
     private void OnValidate()
     {
         updateScale();
     }
 
+    /// <summary>
+    /// Load up the latest file and modify our settings when we awake
+    /// </summary>
     public void Awake()
     {
         if (string.Empty == filePath)
@@ -343,11 +359,10 @@ public class NavGrid : MonoBehaviour
         updateScale();
         PopulateObstacles();
     }
-    public void Update()
-    {
 
-    }
-
+    /// <summary>
+    /// Handle our startup 
+    /// </summary>
     public void Start()
     {
         if (string.Empty == filePath)
@@ -355,7 +370,6 @@ public class NavGrid : MonoBehaviour
             filePath = Path.Combine(Application.persistentDataPath, "gridSave.bin");
         }
         updateScale();
-        //  PopulateObstacles();
 
     }
 
@@ -375,13 +389,11 @@ public class NavGrid : MonoBehaviour
             // Toggle the walkability state
             navGridArray[x, z].isWalkable = !navGridArray[x, z].isWalkable;
 
-            // Optionally, trigger an update to the visual representation of the grid
-            //UpdateGridVisuals(x, z);
         }
     }
 
     /// <summary>
-    /// 
+    /// Populate our obstacles at run time
     /// </summary>
     private void PopulateObstacles()
     {
@@ -397,8 +409,6 @@ public class NavGrid : MonoBehaviour
         float XVal = PlaneXSize / GridXSize;
         float ZVal = PlaneZSize / GridZSize;
 
-
-        //Vector3 startPosition = transform.position - new Vector3(planeXSize / 2, 0, planeZSize / 2);
 
         for (int x = 0; x < gridXSize; x++)
         {
@@ -421,19 +431,10 @@ public class NavGrid : MonoBehaviour
                 {
                     GameObject newObstacle = Instantiate(nonWalkableIndicatorPrefab, cellCenter, Quaternion.identity, transform);
                     newObstacle.tag = "Obstacle";
-                    //newObstacle.layer = LayerMask.NameToLayer("Ignore Raycast");
-
-
                 }
 
             }
         }
-
-    }
-
-    public NavGrid()
-    {
-
 
     }
 
@@ -461,7 +462,7 @@ public class NavGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Function for smoothing between 2 nodes.  JMR:Not fully implemented and tested
     /// </summary>
     /// <param name="currentNode"></param>
     /// <param name="nextNode"></param>
@@ -509,7 +510,7 @@ public class NavGrid : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Smooth the path  //JMR consider increasing the smoothing
     /// </summary>
     /// <param name="originalPath"></param>
     /// <returns></returns>
@@ -851,12 +852,16 @@ public class NavGrid : MonoBehaviour
         Debug.Log("LoadGridExit");
     }
 
+    /// <summary>
+    /// Because we know where in the grid our nodes sit we can calculate are position
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <returns></returns>
     public NavGridNode NodeFromWorldPoint(Vector3 worldPosition)
     {
         float XVal = PlaneXSize / GridXSize;
         float ZVal = PlaneZSize / GridZSize;
-        //shift everything positive.
-        //JMRBug We're assuming that our plane is laid out with our center at zero.  We should check for alignment in the future
+        //shift everything
         int xLoc = (int)((worldPosition.x + (PlaneXSize / 2)) / XVal);
         int zLoc = (int)((worldPosition.z + (PlaneZSize / 2)) / ZVal);
    

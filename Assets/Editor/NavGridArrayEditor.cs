@@ -6,30 +6,32 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Our class to handle our custom editor.
+/// </summary>
 [CustomEditor(typeof(NavGrid))]
 public class NavGridArrayEditor : Editor
 {
 
 
     /// <summary>
-    /// 
+    /// JMR: Not fully implemented.  Placeholder of future additions
     /// </summary>
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI(); // Draws the default inspector
         
 
-         //   if (GUILayout.Button("Generate Grid"))
+         /*   if (GUILayout.Button("Generate Grid"))
         {
-            // JMROptional: Implement functionality to generate or regenerate the grid in editor
-        }
+            // JMROptional: Placeholder for button to procedurally generate at a later time
+        }*/
 
     }
 
 
     /// <summary>
     /// Handle interaction with the 
-    /// JMR: This is not efficient to be iterating through everything.  Long term look at adding colliders and using raycasting to detect which grid was hit as a possible more efficient solution.
     /// </summary>
     protected virtual void OnSceneGUI()
     {
