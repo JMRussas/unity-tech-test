@@ -526,42 +526,43 @@ public class NavGrid : MonoBehaviour
         smoothedPath.Add(originalPath[0]); // Always add the starting node
 
         int currentIndex = 0;
-        while (currentIndex < originalPath.Length - 1) // Ensure loop runs until the last node
+        while (currentIndex < originalPath.Length - 1)
         {
-            int lookaheadIndex = currentIndex + 1; // Start looking at the next node
+            int lookaheadIndex = currentIndex + 1;
 
-            Vector3 currentPos = GetGridNodeLocation(originalPath[currentIndex].gridX, originalPath[currentIndex].gridZ);
-            Vector3 lookaheadPos = new Vector3();
-
-            // Iterate to find the furthest node that can be seen from the current node
             while (lookaheadIndex < originalPath.Length)
             {
-                lookaheadPos = GetGridNodeLocation(originalPath[lookaheadIndex].gridX, originalPath[lookaheadIndex].gridZ);
-                if (!CanSee(currentPos, lookaheadPos))
+                Vector3 currentPos = GetGridNodeLocation(originalPath[currentIndex].gridX, originalPath[currentIndex].gridZ);
+                Vector3 lookaheadPos = GetGridNodeLocation(originalPath[lookaheadIndex].gridX, originalPath[lookaheadIndex].gridZ);
+
+                // If cannot see the lookahead node or it's the last node, break
+                if (!CanSee(currentPos, lookaheadPos) || lookaheadIndex == originalPath.Length - 1)
                 {
-                    // If cannot see the lookahead node, break and use the last visible node
-                    lookaheadIndex--;
-                    break;
+                    if (!CanSee(currentPos, lookaheadPos))
+                    {
+                        lookaheadIndex--;
+                    }
+
+                    // To handle the case when all nodes are directly visible from the current node
+                    if (lookaheadIndex == currentIndex)
+                    {
+                        lookaheadIndex++;
+                    }
+
+                    smoothedPath.Add(originalPath[lookaheadIndex]);
+                    currentIndex = lookaheadIndex; // Move currentIndex to the last added node's position
+                    break; // Exit the lookahead loop
                 }
-                if (lookaheadIndex == originalPath.Length - 1) // If the lookahead node is the last node, use it
-                {
-                    break;
-                }
+
                 lookaheadIndex++;
             }
-
-            // Check to prevent adding the same node when currentIndex == lookaheadIndex
-            if (currentIndex != lookaheadIndex)
-            {
-                smoothedPath.Add(originalPath[lookaheadIndex]); // Add the furthest visible node to the smoothed path
-            }
-            currentIndex = lookaheadIndex; // Move to the next node to check from
         }
 
-        // Adding the last node if not already added
-        if (!smoothedPath.Contains(originalPath[originalPath.Length - 1]))
+        // Ensure the last node is added, checking to avoid duplicates
+        NavGridNode lastNode = originalPath[originalPath.Length - 1];
+        if (smoothedPath[smoothedPath.Count - 1].gridX != lastNode.gridX && smoothedPath[smoothedPath.Count - 1].gridZ != lastNode.gridZ)
         {
-            smoothedPath.Add(originalPath[originalPath.Length - 1]);
+            smoothedPath.Add(lastNode);
         }
 
         return smoothedPath.ToArray();
