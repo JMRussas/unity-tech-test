@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Handling our input processing etc
     /// </summary>
-    void Update()
+    void FixedUpdate()
     {
         // Check for mouse button Input
         if (Input.GetMouseButtonUp(0))
