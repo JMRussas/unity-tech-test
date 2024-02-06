@@ -712,7 +712,7 @@ public class NavGrid : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogWarning("Tried to write more neighbors than we should have");
+                        Debug.Log("Tried to write more neighbors than we should have");
                     }
                 }
             }
@@ -770,7 +770,7 @@ public class NavGrid : MonoBehaviour
             return;
         }
 
-        Debug.LogWarning("SaveGridEnter");
+        Debug.Log("SaveGridEnter");
         if(string.Empty == saveFilePath)
         {
             saveFilePath = filePath = Path.Combine(Application.persistentDataPath, "gridSave.bin");
@@ -801,7 +801,7 @@ public class NavGrid : MonoBehaviour
                 }
             }
         }
-        Debug.LogWarning("SaveGridExit");
+        Debug.Log("SaveGridExit");
     }
 
     /// <summary>
@@ -810,7 +810,7 @@ public class NavGrid : MonoBehaviour
     /// <param name="loadFilePath"></param>
     private void LoadGrid(String loadFilePath)
     {
-        Debug.LogWarning("LoadGridEnter");
+        Debug.Log("LoadGridEnter");
         if (string.Empty == loadFilePath)
         {
             loadFilePath = Path.Combine(Application.persistentDataPath, "gridSave.bin");
@@ -818,7 +818,7 @@ public class NavGrid : MonoBehaviour
         if (!File.Exists(loadFilePath))
         {
             generateDefaultNavGridArrayData();
-            Debug.LogError("Save file not found in " + loadFilePath);
+            Debug.Log("Save file not found in " + loadFilePath);
             return;
         }
 
@@ -852,7 +852,7 @@ public class NavGrid : MonoBehaviour
 
            
         }
-        Debug.LogWarning("LoadGridExit");
+        Debug.Log("LoadGridExit");
     }
 
     public NavGridNode NodeFromWorldPoint(Vector3 worldPosition)
