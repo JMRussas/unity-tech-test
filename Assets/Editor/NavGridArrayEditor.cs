@@ -11,18 +11,19 @@ public class NavGridArrayEditor : Editor
 {
 
 
+    /// <summary>
+    /// 
+    /// </summary>
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI(); // Draws the default inspector
         
 
-            if (GUILayout.Button("Generate Grid"))
+         //   if (GUILayout.Button("Generate Grid"))
         {
-            // Optional: Implement functionality to generate or regenerate the grid in editor
+            // JMROptional: Implement functionality to generate or regenerate the grid in editor
         }
 
-        // Display buttons or controls for editing the grid here
-        // For detailed editing, consider implementing OnSceneGUI
     }
 
 
