@@ -37,7 +37,7 @@ public class NavGridArrayEditor : Editor
         NavGrid gridManager = (NavGrid)target;
 
         Vector3 planeScale = gridManager.transform.localScale;
-        Vector3 startPosition = gridManager.transform.position - new Vector3(gridManager.PlaneXSize  / 2 , -100, gridManager.PlaneZSize / 2);
+        Vector3 startPosition = gridManager.transform.position - new Vector3(gridManager.PlaneXSize + gridManager.PlaneXSize, 0, gridManager.PlaneZSize / 2);
 
         float XVal = gridManager.PlaneXSize / gridManager.GridXSize;
         float ZVal = gridManager.PlaneZSize / gridManager.GridZSize;
