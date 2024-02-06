@@ -500,10 +500,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9b68fef76704868bbca95f7bd4dd73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animator: {fileID: 460880628}
   speed: 1
   _grid: {fileID: 366829866}
   _speed: 10
+--- !u!95 &460880628 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2337368491628958690, guid: 468cec12fb62d6b48bd4f109c9825d4d,
+    type: 3}
+  m_PrefabInstance: {fileID: 460880625}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &809482303106803357
 PrefabInstance:
   m_ObjectHideFlags: 0
