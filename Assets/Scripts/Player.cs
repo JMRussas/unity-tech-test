@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Handling our input processing etc
     /// </summary>
-    void FixedUpdate()
+    void Update()
     {
         // Check for mouse button Input
         if (Input.GetMouseButtonUp(0))
@@ -55,10 +55,9 @@ public class Player : MonoBehaviour
 
                 //Reset any pathfinding data from a previous run
                 _grid.ResetPathFindingData();
-                Debug.LogWarning("Get Path Start Time: " + DateTime.Now.ToString());
+
                 _currentPath = _grid.GetPath(transform.position, hitInfo.point);
                 _currentPath = _grid.SmoothPath(_currentPath);
-                Debug.LogWarning("Get Path End Time: " + DateTime.Now.ToString());
                 _currentPathIndex = 0;
             }
         }
