@@ -45,6 +45,7 @@ public class NavGridArrayEditor : Editor
         float cellSize = .925f;
        
         Handles.color = Color.green;
+      
 
         //Calculate our offset
         Vector3 gridOffset = new Vector3(cellSize / 2, 0, cellSize / 2);
@@ -59,19 +60,21 @@ public class NavGridArrayEditor : Editor
                 Vector3 cellCenter = startPosition + new Vector3((x * XVal) + XVal, 0, (z * ZVal) + ZVal );
 
                 //Determine our cube size
-                Vector3 cubeSize = new Vector3(XVal, 1f, ZVal);
-
+                Vector3 cubeSize = new Vector3(XVal - 0.5f, 1f, ZVal - 0.5f);
 
                 Vector3 cellPosition = gridManager.transform.transform.position +
                      new Vector3(x * cellSize, 0, z * cellSize) + gridOffset;
+                Handles.color =  gridManager.navGridArray[x, z].isWalkable ? Color.green : Color.red;
 
                 if (Handles.Button(cellCenter, Quaternion.LookRotation(Vector3.up), XVal/2, XVal/2, Handles.RectangleHandleCap))
                 {
                     gridManager.navGridArray[x, z].isWalkable = !gridManager.navGridArray[x, z].isWalkable;
-                    // Optionally, you might want to immediately reflect this change in the editor
+
                     EditorUtility.SetDirty(target); // Mark the target object as dirty to ensure changes are saved
                     gridManager.SaveData();
                 }
+               
+              
             }
         }
  
