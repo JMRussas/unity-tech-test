@@ -1,3 +1,9 @@
+#Justin Russas Comments:
+
+1. Adding obstacles:
+  You can add obstacles to the map by clicking on the NavGridPlane by clicking on the grid with widgets displayed.  A grid will be displayed above the NavGridPlane and clicking on the buttons will add obstacles on those nodes.  The data will be saved to a binary file.
+3.    
+
 # Unity Pathfinding Take-Home Project
 
 Welcome to the Pocket Worlds Unity Pathfinding Take-Home Project! In this repository, we'd like you to demonstrate your engineering skills by creating a small Unity project that implements pathfinding. While Unity provides a built-in NavMesh system for pathfinding, this test will challenge you to create your own custom pathfinding solution for a 2D grid.
