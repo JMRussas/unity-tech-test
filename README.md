@@ -1,7 +1,11 @@
 #Justin Russas Comments:
 
-1. Adding obstacles:
-  You can add obstacles to the map by clicking on the NavGridPlane by clicking on the grid with widgets displayed in the scene window.  A grid will be displayed above the NavGridPlane and clicking on the buttons will add obstacles on those nodes.  The data will be saved to a binary file.
+1. Adding, Clearing, Creating a maze, etc:
+  There is an editor window loaded from Window->Pathfinding->GridEditor
+  Clicking on Nodes:  Clicking on the nodes will toggle the walkable status
+  Generate Maze: Will fill the plane with a maze
+  Clear Plane:  Will remove all obstacles
+  Fill Plane:  Will completely fill the plane with obstacles
 
 Color Coding:
 Walkable areas: Green
