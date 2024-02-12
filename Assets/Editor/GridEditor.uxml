@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement class="grid-editor-window">
+        <ui:VisualElement class="main-container">
+            <ui:VisualElement name="GridContainer" class="grid-container"/>
+            <ui:VisualElement name="rightContainer" class="right-container">
+                <ui:Button name="generateMaze" text="Generate Maze" class="button" />
+                <ui:Button name="clearPlane" text="Clear Plane" class="button" />
+                <ui:Button name="fillPlane" text="Fill Plane" class="button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
