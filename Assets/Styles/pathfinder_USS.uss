@@ -21,43 +21,43 @@
     height: 40px;
     margin: 10px;
     padding: 5px 10px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-size: 14px;
-    text-align: center;
+    -unity-text-align: middle-center;
     background-color: #555555; 
     border-width: 2px;
     border-color: #FFFFFF; 
     border-radius: 5px;
-    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s, box-shadow 0.2s;
+    text-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s, text-shadow 0.2s;
 }
 
 .gridbutton {
     width: 90px;
     height: 50px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    text-align: center;
+    -unity-text-align: middle-center;
     border-width: 2px;
     border-color: #FFFFFF; 
     border-radius: 5px;
-    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.2s, box-shadow 0.2s;
+    text-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s, text-shadow 0.2s;
 }
 
 .button:hover {
     background-color: #D3d3d3; 
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
     color: #000000;
 }
 
 .button:active {
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
     border-color: #555555;
 }
 
@@ -85,7 +85,7 @@
     border-radius: 15px; 
     padding: 10px; 
     overflow: hidden; 
-    background: #bcbcbc;
+    background-color: #bcbcbc;
 }
 
 .grid-column {
