@@ -505,17 +505,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c9b68fef76704868bbca95f7bd4dd73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Strength: 0
-  Intelligence: 0
-  Agility: 0
-  Health: 0
-  Name: 
   animator: {fileID: 460880628}
-  speed: 1
   _grid: {fileID: 366829866}
   _speed: 10
-  isEnemy: 0
-  thePlayer: {fileID: 460880627}
 --- !u!95 &460880628 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2337368491628958690, guid: 468cec12fb62d6b48bd4f109c9825d4d,
@@ -644,7 +636,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 573389443}
-  speed: 1
   _grid: {fileID: 366829866}
   _speed: 10
   isEnemy: 1
@@ -715,6 +706,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Blast Robot Blue (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6969487929517679844, guid: 92b882a8d30982647a9ca5f16786f97c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7778641194408902238, guid: 92b882a8d30982647a9ca5f16786f97c,
         type: 3}
@@ -809,7 +805,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1708393265}
-  speed: 1
   _grid: {fileID: 366829866}
   _speed: 10
   isEnemy: 1
