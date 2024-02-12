@@ -15,6 +15,8 @@ Non-Walkable areas: Red
 
 4. Widgets can be toggle on and off to look at the walkable areas and non walkable areas beyond the obstacles placed on the map.
 
+***** You may need to delete your old save file for the grid data when going to the newest one.*****
+
 # Unity Pathfinding Take-Home Project
 
 Welcome to the Pocket Worlds Unity Pathfinding Take-Home Project! In this repository, we'd like you to demonstrate your engineering skills by creating a small Unity project that implements pathfinding. While Unity provides a built-in NavMesh system for pathfinding, this test will challenge you to create your own custom pathfinding solution for a 2D grid.
