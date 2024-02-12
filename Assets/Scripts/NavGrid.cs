@@ -80,12 +80,17 @@ public class NavGrid : MonoBehaviour
     /// </summary>
     public Transform player;
 
-    /// <summary>
-    /// Calculated size of the grid related to world transform  
-    /// </summary>
-    public Vector2 gridWorldSize;
-
     #region properties
+
+    /// <summary>
+    /// Player Spawn 
+    /// </summary>
+    public Vector2 PlayerSpawn;
+
+    /// <summary>
+    /// Collection of enemySpawns
+    /// </summary>
+    public List<Vector2> EnemySpawns;
 
     /// <summary>
     /// Our prefab to use to generate our obstacles 
@@ -146,6 +151,22 @@ public class NavGrid : MonoBehaviour
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    private float CellXSize
+    {
+        get { return PlaneXSize / GridXSize; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private float CellZSize
+    {
+        get { return PlaneZSize / GridZSize; }
+    }
+
+    /// <summary>
     /// read only scale properties for our plane
     /// </summary>
     private int xPlaneScale;
@@ -174,17 +195,7 @@ public class NavGrid : MonoBehaviour
     {
         get { return planeZSize; }
     }
-
-    /// <summary>
-    /// Scale settings of Z axis of our plane
-    /// </summary>
-    private int zPlaneScale;
-
-    /// <summary>
-    /// GraphView Node Object for editor
-    /// </summary>
-    private Node[,] visualGridArray;
-
+    
     /// <summary>
     /// Our data storage for our nodes 
     /// </summary>
@@ -276,8 +287,8 @@ public class NavGrid : MonoBehaviour
                 {
                     navGridArray[x, z].gridX = x;
                     navGridArray[x, z].gridZ = z;
-                    navGridArray[x, z].localPosition = new Vector3(transform.position.x, 0, transform.position.z);
-                    navGridArray[x, z].worldPosition = new Vector3(transform.position.x, 0, transform.position.z);//new Vector3(x - GridXSize / 2, 0, z - GridZSize / 2);
+                    navGridArray[x, z].localPosition = new Vector3(x * CellXSize + CellXSize/2, 0, z * CellZSize + CellZSize/2);
+                    navGridArray[x, z].worldPosition = navGridArray[x, z].localPosition - new Vector3(PlaneXSize / 2, 0, PlaneZSize / 2);
                     navGridArray[x, z].isWalkable = true;
                 }
             }
@@ -288,16 +299,16 @@ public class NavGrid : MonoBehaviour
     /// <summary>
     /// Reset Pathfinding data after ever pathfind 
     /// </summary>
-    public void ResetPathFindingData()
+    public void ResetPathFindingData(NavGridNode[,] navgridarray)
     {
         for (int x = 0; x < gridXSize; x++)
         {
             for (int z = 0; z < gridZSize; z++)
             {
-                navGridArray[x, z].gCost = int.MaxValue;
-                navGridArray[x, z].hCost = int.MaxValue;
-                navGridArray[x, z].parentNodeX = 0;
-                navGridArray[x, z].parentNodeZ = 0;
+                navgridarray[x, z].gCost = int.MaxValue;
+                navgridarray[x, z].hCost = int.MaxValue;
+                navgridarray[x, z].parentNodeX = 0;
+                navgridarray[x, z].parentNodeZ = 0;
 
             }
         }
@@ -311,16 +322,16 @@ public class NavGrid : MonoBehaviour
         navGridArray = new NavGridNode[(int)gridXSize, (int)gridZSize];
         NavGridNode navGridNodeTMP = new NavGridNode();
 
-        for (int xCntr = 0; xCntr < navGridArray.GetLength(0); xCntr++)
+        for (int x = 0; x < navGridArray.GetLength(0); x++)
         {
-            for (int zCntr = 0; zCntr < navGridArray.GetLength(1); zCntr++)
+            for (int z = 0; z < navGridArray.GetLength(1); z++)
             {
-                navGridNodeTMP.gridX = xCntr;
-                navGridNodeTMP.gridZ = zCntr;
-
-                navGridNodeTMP.worldPosition = new Vector3(xCntr - GridXSize / 2, 0, zCntr - GridZSize / 2);
+                navGridNodeTMP.gridX = x;
+                navGridNodeTMP.gridZ = z;
+                navGridNodeTMP.localPosition = new Vector3(x * CellXSize + CellXSize / 2, 0, z * CellZSize + CellZSize/2);
+                navGridNodeTMP.worldPosition = navGridNodeTMP.localPosition - new Vector3(PlaneXSize / 2,0, PlaneZSize / 2);
                 navGridNodeTMP.isWalkable = true;
-                navGridArray[xCntr, zCntr] = navGridNodeTMP;
+                navGridArray[x, z] = navGridNodeTMP;
             }
 
         }
@@ -381,7 +392,7 @@ public class NavGrid : MonoBehaviour
     {
         // Convert the worldPoint to grid coordinates
         int x = Mathf.FloorToInt(worldPoint.x / 1);
-        int z = Mathf.FloorToInt(worldPoint.z / 1); // Use z for grid y-coordinate in a 3D project
+        int z = Mathf.FloorToInt(worldPoint.z / 1);
 
         // Check if the coordinates are within the grid bounds
         if (x >= 0 && x < gridXSize && z >= 0 && z < gridZSize)
@@ -404,30 +415,20 @@ public class NavGrid : MonoBehaviour
         }
 
         Vector3 planeScale = transform.localScale;
-        Vector3 startPosition = transform.position - new Vector3(PlaneXSize / 2, 1, PlaneZSize / 2);
+        Vector3 startPosition = transform.position - new Vector3(planeXSize / 2, 0, planeZSize / 2);
 
-        float XVal = PlaneXSize / GridXSize;
-        float ZVal = PlaneZSize / GridZSize;
-
+        float XVal = planeXSize / gridXSize;
+        float ZVal = planeZSize / gridZSize;
 
         for (int x = 0; x < gridXSize; x++)
         {
             for (int z = 0; z < gridZSize; z++)
             {
-
-
                 // Calculate the center position of each cell
-                Vector3 cellCenter = startPosition + new Vector3((x * XVal) + XVal / 2, 1, (z * ZVal) + ZVal / 2);
+                Vector3 cellCenter = startPosition + new Vector3((x * XVal) + XVal / 2, 0, (z * ZVal) + ZVal / 2);
 
-                //Determine our cube size
-                Vector3 cubeSize = new Vector3(XVal, 1f, ZVal);
 
-                var item = navGridArray[x, z];
-                Vector3 center = item.worldPosition + transform.position;
-
-                Vector3 pos = new Vector3(x * 1 + transform.position.x, 0, z * 1 + transform.position.z);
-
-                if (!item.isWalkable)
+                if (!navGridArray[x, z].isWalkable)
                 {
                     GameObject newObstacle = Instantiate(nonWalkableIndicatorPrefab, cellCenter, Quaternion.identity, transform);
                     newObstacle.tag = "Obstacle";
@@ -437,9 +438,21 @@ public class NavGrid : MonoBehaviour
         }
 
     }
-
+    
     #region Data
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="location"></param>
+    /// <returns></returns>
+    public NavGridNode GetGridNodeByWorldLocation( Vector3 location , NavGridNode [,] navgridarray)
+    {
+        //shift from world to calc
+        return navgridarray[
+            (int)((location.x + (PlaneXSize / 2)) / CellXSize),
+            (int)((location.z + (PlaneZSize / 2)) / CellZSize)];
+    }
 
     /// <summary>
     /// Function to figure out locations based on the index
@@ -447,15 +460,13 @@ public class NavGrid : MonoBehaviour
     /// <param name="xIndex">X Index</param>
     /// <param name="zIndex">Z Index</param>
     /// <returns>Target Destination</returns>
-    public Vector3 GetGridNodeLocation(int xIndex, int zIndex)
+    public Vector3 GetWorldLocationByGridNode(int xIndex, int zIndex, NavGridNode[,] navgridarray)
     {
         Vector3 targetDestination = new Vector3();
-        float Xcellsize = PlaneXSize / GridXSize;
-        float Zcellsize = PlaneZSize / GridZSize;
 
-        //We're calculating where the grid location is and adjusting to the midddle of the cell
-        float xAdjustment = navGridArray[xIndex, zIndex].gridX * Xcellsize - (PlaneXSize / 2) + (GridXSize / 4);
-        float zAdjustment = navGridArray[xIndex, zIndex].gridZ * Zcellsize - (PlaneZSize / 2) + (GridZSize / 4);
+        //We always return the middle of the cell
+        float xAdjustment = xIndex * CellXSize - (PlaneXSize / 2);
+        float zAdjustment = zIndex * CellZSize - (PlaneZSize / 2);
 
         targetDestination = new Vector3(xAdjustment, 0, zAdjustment);
         return targetDestination;
@@ -468,14 +479,11 @@ public class NavGrid : MonoBehaviour
     /// <param name="nextNode"></param>
     /// <param name="smoothingFactor"></param>
     /// <returns></returns>
-    Vector3 SmoothBetweenTwoNodes(NavGridNode currentNode, NavGridNode nextNode, float smoothingFactor)
+    Vector3 SmoothBetweenTwoNodes(NavGridNode currentNode, NavGridNode nextNode, float smoothingFactor, NavGridNode[,] navgridarray)
     {
-        Vector3 startPosition = GetGridNodeLocation(currentNode.gridX, currentNode.gridZ);
-        Vector3 endPosition = GetGridNodeLocation(nextNode.gridX, nextNode.gridZ);
+        Vector3 startPosition = GetWorldLocationByGridNode(currentNode.gridX, currentNode.gridZ, navgridarray);
+        Vector3 endPosition = GetWorldLocationByGridNode(nextNode.gridX, nextNode.gridZ, navgridarray);
 
-        // Linearly interpolate between the start and end positions based on the smoothing factor
-        // Smoothing factor determines how far along the line between the two nodes the smoothed point is.
-        // A smoothing factor of 0.5 would return the midpoint between the two nodes.
         Vector3 smoothedPoint = Vector3.Lerp(startPosition, endPosition, smoothingFactor);
 
         return smoothedPoint;
@@ -514,7 +522,7 @@ public class NavGrid : MonoBehaviour
     /// </summary>
     /// <param name="originalPath"></param>
     /// <returns></returns>
-    public NavGridNode[] SmoothPath(NavGridNode[] originalPath)
+    public NavGridNode[] SmoothPath(NavGridNode[] originalPath, NavGridNode[,] navgridarray)
     {
         if (originalPath == null || originalPath.Length < 2)
             return originalPath; // No smoothing needed for extremely short paths
@@ -529,8 +537,8 @@ public class NavGrid : MonoBehaviour
 
             while (lookaheadIndex < originalPath.Length)
             {
-                Vector3 currentPos = GetGridNodeLocation(originalPath[currentIndex].gridX, originalPath[currentIndex].gridZ);
-                Vector3 lookaheadPos = GetGridNodeLocation(originalPath[lookaheadIndex].gridX, originalPath[lookaheadIndex].gridZ);
+                Vector3 currentPos = GetWorldLocationByGridNode(originalPath[currentIndex].gridX, originalPath[currentIndex].gridZ, navgridarray);
+                Vector3 lookaheadPos = GetWorldLocationByGridNode(originalPath[lookaheadIndex].gridX, originalPath[lookaheadIndex].gridZ, navgridarray);
 
                 // If cannot see the lookahead node or it's the last node, break
                 if (!CanSee(currentPos, lookaheadPos) || lookaheadIndex == originalPath.Length - 1)
@@ -569,19 +577,19 @@ public class NavGrid : MonoBehaviour
     /// <summary>
     /// Given the current and desired location, return a path to the destination
     /// </summary>
-    public NavGridNode[] GetPath(Vector3 origin, Vector3 destination)
+    public NavGridNode[] GetPath(Vector3 origin, Vector3 destination, NavGridNode[,] navgridarray)
     {
 
         NavGridNode[] currentPath = Array.Empty<NavGridNode>();
-        NavGridNode startNode = NodeFromWorldPoint(origin);
+        NavGridNode startNode = NodeFromWorldPoint(origin, navgridarray);
         startNode.gCost = 0;
-        NavGridNode targetNode = NodeFromWorldPoint(destination);
+        NavGridNode targetNode = NodeFromWorldPoint(destination, navgridarray);
         startNode.hCost = GetDistance(startNode, targetNode);
 
         List<NavGridNode> openNodes = new List<NavGridNode>();
         HashSet<NavGridNode> closedNodes = new HashSet<NavGridNode>();
         openNodes.Add(startNode);
-
+       
         while (openNodes.Count > 0)
         {
             NavGridNode currentNode = openNodes[0];
@@ -605,11 +613,11 @@ public class NavGrid : MonoBehaviour
                 targetNode.parentNodeZ = currentNode.parentNodeZ;
 
                 //Yay we found it, now return our path back
-                return RetracePath(startNode, targetNode);
+                return RetracePath(startNode, targetNode, navgridarray);
             }
 
             //Check our neighbors
-            NavGridNode[] neighbors = GetNeighbors(currentNode);
+            NavGridNode[] neighbors = GetNeighbors(currentNode, navgridarray);
             for (int i = 0; i < neighbors.Length; i++)
             {
                 NavGridNode neighbor = neighbors[i];
@@ -626,10 +634,10 @@ public class NavGrid : MonoBehaviour
                     neighbor.hCost = GetDistance(neighbor, targetNode);
                     neighbor.parentNodeX = currentNode.gridX;
                     neighbor.parentNodeZ = currentNode.gridZ;
-                    navGridArray[neighbor.gridX, neighbor.gridZ].gCost = neighbor.gCost;
-                    navGridArray[neighbor.gridX, neighbor.gridZ].hCost = neighbor.hCost;
-                    navGridArray[neighbor.gridX, neighbor.gridZ].parentNodeX = currentNode.gridX;
-                    navGridArray[neighbor.gridX, neighbor.gridZ].parentNodeZ = currentNode.gridZ;
+                    navgridarray[neighbor.gridX, neighbor.gridZ].gCost = neighbor.gCost;
+                    navgridarray[neighbor.gridX, neighbor.gridZ].hCost = neighbor.hCost;
+                    navgridarray[neighbor.gridX, neighbor.gridZ].parentNodeX = currentNode.gridX;
+                    navgridarray[neighbor.gridX, neighbor.gridZ].parentNodeZ = currentNode.gridZ;
                     if (!openNodes.Contains(neighbor))
                         openNodes.Add(neighbor);
                 }
@@ -644,7 +652,7 @@ public class NavGrid : MonoBehaviour
     /// <param name="startNode"></param>
     /// <param name="endNode"></param>
     /// <returns></returns>
-    NavGridNode[] RetracePath(NavGridNode startNode, NavGridNode endNode)
+    NavGridNode[] RetracePath(NavGridNode startNode, NavGridNode endNode, NavGridNode[,] navgridarray)
     {
         List<NavGridNode> curList = new List<NavGridNode>();
         NavGridNode currentNode = endNode;
@@ -652,7 +660,7 @@ public class NavGrid : MonoBehaviour
         while(currentNode.gridZ != startNode.gridZ || currentNode.gridX != startNode.gridX)
         {
             curList.Add(currentNode);
-            currentNode = navGridArray[currentNode.parentNodeX, currentNode.parentNodeZ];
+            currentNode = navgridarray[currentNode.parentNodeX, currentNode.parentNodeZ];
         }
         curList.Reverse();
         return curList.ToArray();
@@ -680,12 +688,12 @@ public class NavGrid : MonoBehaviour
     /// </summary>
     /// <param name="node"></param>
     /// <returns></returns>
-    public NavGridNode[] GetNeighbors(NavGridNode node)
+    public NavGridNode[] GetNeighbors(NavGridNode node, NavGridNode[,] navgridarray)
     {
 
-        int numNeighbors = GetNumberOfNeighbors(node);
+        int numNeighbors = GetNumberOfNeighbors(node, navgridarray);
         int neighborCounter = 0;
-        NavGridNode[] neighbors = new NavGridNode[GetNumberOfNeighbors(node)];
+        NavGridNode[] neighbors = new NavGridNode[GetNumberOfNeighbors(node,navgridarray)];
                       
         //Check 1 value to the left, same column, and column to the right
         for (int x = -1; x <= 1; x++)
@@ -704,7 +712,7 @@ public class NavGrid : MonoBehaviour
                 {
                     if (neighborCounter < numNeighbors)
                     {
-                        neighbors[neighborCounter] = navGridArray[checkX, checkZ];
+                        neighbors[neighborCounter] = navgridarray[checkX, checkZ];
                         neighborCounter++;
                     }
                     else
@@ -723,7 +731,7 @@ public class NavGrid : MonoBehaviour
     /// </summary>
     /// <param name="node"></param>
     /// <returns></returns>
-    public int GetNumberOfNeighbors(NavGridNode node)
+    public int GetNumberOfNeighbors(NavGridNode node, NavGridNode[,] navgridarray)
     {
         int cntr = 0;
         //Check 1 value to the left, same column and column to the right
@@ -857,7 +865,7 @@ public class NavGrid : MonoBehaviour
     /// </summary>
     /// <param name="worldPosition"></param>
     /// <returns></returns>
-    public NavGridNode NodeFromWorldPoint(Vector3 worldPosition)
+    public NavGridNode NodeFromWorldPoint(Vector3 worldPosition, NavGridNode[,] navgridarray)
     {
         float XVal = PlaneXSize / GridXSize;
         float ZVal = PlaneZSize / GridZSize;
@@ -865,7 +873,7 @@ public class NavGrid : MonoBehaviour
         int xLoc = (int)((worldPosition.x + (PlaneXSize / 2)) / XVal);
         int zLoc = (int)((worldPosition.z + (PlaneZSize / 2)) / ZVal);
    
-        return navGridArray[xLoc, zLoc];
+        return navgridarray[xLoc, zLoc];
               
     }
 

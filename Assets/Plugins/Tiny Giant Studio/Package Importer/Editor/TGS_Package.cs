@@ -10,21 +10,21 @@ namespace TinyGiantStudio.PackageImporter
     [Serializable]
     internal class TGS_Package
     {
-        public string packageName;
-        public DefaultAsset package;
+        public string packageName = string.Empty;
+        public DefaultAsset package = null;
         [Tooltip("The description of the unitypackage")]
-        public string Description;
+        public string Description = string.Empty;
         public string packageIdentifier = "Unique Package Indentifier";
 
         public bool hasPipelineDependancy = false;
-        public Pipeline targetPipeline;
+        public Pipeline targetPipeline = new Pipeline();
 
         public int[] minimumPipelineVersion;
         public int[] maximumPipelineVersion;
 
         public bool hasUnityVersionDependancy = false;
-        public double minimumUnityVersion;
-        public double maximumUnityVersion;
+        public double minimumUnityVersion = 0.0;
+        public double maximumUnityVersion = 0.0;
 
 
 
